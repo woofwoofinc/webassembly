@@ -98,3 +98,17 @@ To test the Rust project, use:
 ::
 
     cargo test
+
+To compile a production version of the Webpack project use:
+
+::
+
+    cargo build
+    webpack -p
+
+This can be served using Python SimpleHTTPServer for inspection or verification:
+
+::
+
+    cd dist
+    python -m SimpleHTTPServer 8080
