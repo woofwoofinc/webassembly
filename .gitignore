@@ -3,5 +3,10 @@
 *.oci
 
 # Build artifacts
+dist
 docs/_build
 target
+node_modules
+lib
+
+yarn-error.log

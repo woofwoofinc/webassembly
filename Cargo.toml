@@ -1,0 +1,32 @@
+[package]
+name = "webassembly"
+version = "1.0.0"
+authors = ["Daithi O Crualaoich <daithi.ocrualaoich@gmail.com>"]
+license = "MIT OR Apache-2.0"
+description = "Demo project for building WebAssembly projects using Rust."
+
+homepage = "https://woofwoofinc.github.io/webassembly"
+repository = "https://github.com/woofwoofinc/webassembly"
+readme = "README.md"
+
+keywords = ["webassembly"]
+
+include = [
+    "src/*",
+    "AUTHORS",
+    "Cargo.lock",
+    "Cargo.toml",
+    "LICENSE-*",
+    "README.md",
+]
+
+[dependencies]
+rand = "0.3"
+statrs = "0.8.0"
+
+[package.metadata.sphinx]
+docs-path = "docs"
+commit-message = "(cargo-sphinx) Generate docs."
+sign-commit = false
+push-remote = "origin"
+push-branch = "gh-pages"
