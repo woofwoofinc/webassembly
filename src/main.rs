@@ -1,15 +1,17 @@
+#[macro_use]
+extern crate lazy_static;
 extern crate rand;
 extern crate statrs;
 
-use rand::StdRng;
 use statrs::distribution::{Distribution, Normal};
 
-fn main() {}
+lazy_static! {
+    static ref NORMAL: Normal = Normal::new(0.0, 1.0).unwrap();
+}
 
 #[no_mangle]
 pub fn normal() -> f64 {
-    let mut r = StdRng::new().unwrap();
-    let n = Normal::new(0.0, 1.0).unwrap();
-
-    n.sample::<StdRng>(&mut r)
+    NORMAL.sample(&mut rand::thread_rng())
 }
+
+fn main() {}
