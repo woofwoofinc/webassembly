@@ -43,6 +43,7 @@ This container is intended for interactive use, so to run it with rkt use:
 
     sudo rkt run \
         --interactive \
+        --port=8080-tcp:8080 \
         --volume webassembly,kind=host,source=$(pwd) \
         dev-webassembly \
         --mount volume=webassembly,target=/webassembly

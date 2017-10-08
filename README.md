@@ -22,6 +22,42 @@ system with [rustup] if they are not already available.
 [Rust]: https://www.rust-lang.org
 [rustup]: https://www.rustup.rs
 
+[Emscripten] is needed to compile `.wasm` files. Install it using:
+
+[Emscripten]: https://github.com/kripken/emscripten
+
+    EMSCRIPTEN_VERSION=1.37.21
+    wget https://s3.amazonaws.com/mozilla-games/emscripten/releases/emsdk-portable.tar.gz
+    tar xzf emsdk-portable.tar.gz
+    cd emsdk-portable
+    
+    emsdk update
+    emsdk install emscripten-${EMSCRIPTEN_VERSION}
+    emsdk install clang-e${EMSCRIPTEN_VERSION}-64bit
+
+    emsdk activate emscripten-${EMSCRIPTEN_VERSION}
+    emsdk activate clang-e${EMSCRIPTEN_VERSION}-64bit
+
+Then add the location of the `emsdk-portable` directory,
+`emsdk-portable/clang/e$EMSCRIPTEN_VERSION_64bit` and
+`emsdk-portable/emscripten/$EMSCRIPTEN_VERSION` to your PATH.
+
+Finally install the Rust WebAssembly target architecture.
+
+    rustup target add wasm32-unknown-emscripten
+
+The project build stack also uses [Node.js], the [Yarn] package manager, and the
+[Webpack] module bundler. Install these on your system if they are not already
+available.
+
+[Node.js]: https://nodejs.org
+[Yarn]: https://yarnpkg.com
+[Webpack]: https://webpack.js.org
+
+It is also useful to have the [Webpack development server] installed.
+
+[Webpack development server]: https://github.com/webpack/webpack-dev-server
+
 A [rkt] container build script is included in the project repository and
 provides an installation which can be used to build the project also. See the
 description on building and running the container in the Development Tools
@@ -34,10 +70,35 @@ the rkt container system.
 
 [RktMachine]: https://github.com/woofwoofinc/rktmachine
 
-Build and test the project using:
+For the Webpack build, first install [Literacy] and the other project
+dependencies using Yarn.
+
+[Literacy]: https://github.com/woofwoofinc/literacy
+
+    $ yarn
+
+Then run the Webpack development server to build and serve a test site.
+
+    $ webpack-dev-server -d
+
+**CAUTION:** See the documentation if developing on the included rkt container
+or using RktMachine. Extra options are needed for the development server to be
+reachable from the host machine.
+
+The test site can be accessed via a browser on [localhost:8080].
+
+[localhost:8080]: http://localhost:8080
+
+To test the Rust project, use:
 
     $ cargo test
     
+If you want to help extend and improve this project, then your contributions
+would be greatly appreciated. Check out our [GitHub issues] for ideas or a
+place to ask questions. Welcome to the team!
+
+[GitHub issues]: https://github.com/woofwoofinc/webassembly/issues
+
 
 License
 -------

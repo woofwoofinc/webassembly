@@ -1,0 +1,37 @@
+{
+  "description": "Demo project for building WebAssembly projects using Rust.",
+  "license": "(Apache-2.0 OR MIT)",
+  "homepage": "https://github.com/woofwoofinc/webassembly",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/woofwoofinc/webassembly.git"
+  },
+  "scripts": {
+    "build": "webpack -p && eslint dist"
+  },
+  "devDependencies": {
+    "copy-webpack-plugin": "^4.1.1",
+    "eslint": "^4.7.2",
+    "eslint-config-strict": "^14.0.0",
+    "eslint-loader": "^1.9.0",
+    "literacy": "^1.1.0",
+    "literacy-loader": "^1.1.0",
+    "rust-wasm-loader": "^0.1.2",
+    "webpack": "^3.6.0",
+    "webpack-dev-server": "^2.9.1"
+  },
+  "eslintConfig": {
+    "extends": "strict",
+    "env": {
+      "es6": true,
+      "node": true,
+      "browser": true
+    },
+    "rules": {
+      "arrow-parens": "off",
+      "indent": "off",
+      "no-console": "off",
+      "no-multiple-empty-lines": "off"
+    }
+  }
+}
