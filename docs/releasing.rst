@@ -6,65 +6,31 @@ Publishing the Documentation
 Project documentation is published to `woofwoofinc.github.io/webassembly`_
 using `GitHub Pages`_.
 
-.. _woofwoofinc.github.io/sketch-favicon: https://woofwoofinc.github.io/webassembly
+.. _woofwoofinc.github.io/webassembly: https://woofwoofinc.github.io/webassembly
 .. _GitHub Pages: https://pages.github.com
 
-First build the documentation as described in :ref:`documentation`.
-
-The GitHub configuration for this project is to serve documentation from the
-``gh-pages`` branch. Rather than attempt to build a new ``gh-pages`` in the
-current repository, it is simpler to copy the repository, change to ``gh-pages``
-in the repository copy, and clean everything from there. This has the advantage
-of not operating in the current repository too so it is non-destructive.
-
-Create a copy of the repository.
+Build and publish the documentation as described in :ref:`documentation`. The
+GitHub configuration for this project is to serve documentation from the
+``gh-pages`` branch.
 
 ::
 
-    cp -r webassembly webassembly-gh-pages
+    cargo sphinx --push
 
-Then change into the new repository and swap to the ``gh-pages`` branch.
-
-::
-
-    pushd webassembly-gh-pages > /dev/null
-    git checkout -b gh-pages
-
-Clear out everything in the branch. This uses dot globing and extended glob
-options to arrange deletion of everything except the .git directory.
+Publishing from the container fails for missing GitHub credentials. In this case
+it is possible to run the publication command in the container interactively and
+complete it on the host machine. Compile and generate the Git repository to push
+in ``docs/_build/html`` by running the following in the container.
 
 ::
 
-    shopt -s dotglob
-    shopt -s extglob
-    rm -fr !(.git)
+    cargo sphinx --push
 
-    shopt -u extglob
-    shopt -u dotglob
-
-Next, copy in the contents of ``docs/_build/html`` from the main project
-repository. This is the latest build of the documentation. Dot globing is
-used again since the dot files in the ``docs/_build/html`` directory are also
-needed.
+Then on the host, change to ``docs/_build/html`` which is now a new Git
+repository with the documentation HTML committed on master. Push this to origin
+by specifying the remote.
 
 ::
 
-    shopt -s dotglob
-    cp -r ../webassembly/docs/_build/html/* .
-
-    shopt -u dotglob
-
-Commit the documentation and push the ``gh-pages`` branch to GitHub.
-
-::
-
-    git add -A
-    git commit -m "Add latest documentation."
-    git push origin gh-pages
-
-Then clean up the temporary repository.
-
-::
-
-    popd > /dev/null
-    rm -fr webassembly-gh-pages
+    cd docs/_build/html
+    git push -f git@github.com:woofwoofinc/webassembly.git master:gh-pages
