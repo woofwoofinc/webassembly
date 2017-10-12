@@ -7,7 +7,7 @@
     "url": "https://github.com/woofwoofinc/webassembly.git"
   },
   "scripts": {
-    "build": "webpack -p && eslint dist"
+    "build": "webpack"
   },
   "devDependencies": {
     "copy-webpack-plugin": "^4.1.1",
