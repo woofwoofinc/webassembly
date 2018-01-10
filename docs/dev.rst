@@ -19,7 +19,7 @@ Build the container using the provided build script:
 
 ::
 
-    ./dev-webassembly.buildah.sh
+    sudo ./dev-webassembly.buildah.sh
 
 This will make a ``dev-webassembly.oci`` in the directory. Convert this to
 ``dev-webassembly.aci`` for installation into rkt:
