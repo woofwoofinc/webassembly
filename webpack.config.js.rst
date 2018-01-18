@@ -105,17 +105,24 @@ Include a rule in ``modules.exports.modules`` for handing ``.js.rst`` files.
             ]
           },
 
-Rule for building Rust files by shelling out to cargo.
+Rule for building Rust files by shelling out to cargo. Make sure to use the
+release build or will see "indirect call signature mismatch" errors.
 
 .. code-block:: javascript
 
           {
             test: /\.rs$/,
-            loader: 'rust-wasm-loader',
-            options: {
-              path: '.'
-            }
-          },
+            use: [
+              'wasm-loader',
+              {
+                loader: 'rust-native-wasm-loader',
+                options: {
+                  release: true,
+                  gc: true
+                }
+              }
+            ]
+          }
         ]
       },
 
