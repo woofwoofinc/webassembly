@@ -3,7 +3,7 @@ extern crate lazy_static;
 extern crate rand;
 
 use rand::Rng;
-use rand::distributions::{Normal, IndependentSample};
+use rand::distributions::{IndependentSample, Normal};
 
 ///
 /// A rand::Rng implementation which is safe for wasm-unknown-unknown.
@@ -24,7 +24,7 @@ impl Rng for JavaScriptRng {
             // because the JavaScript Math.random call returns values between
             // 0 (inclusive) and 1 (exclusive). Without the + 1 here, the floor
             // call would mean the maximum u32 value couldn't be returned.
-            let upper: i64 = 4294967295 + 1;
+            let upper: i64 = 4_294_967_295 + 1;
             let deviate: f64 = javascript_math_random() * (upper as f64);
 
             deviate.floor() as u32

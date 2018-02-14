@@ -20,8 +20,8 @@ functions and the WebAssembly loader inserts these into the environment for the
 loaded module.
 
 The Rust random number generator causes an exception when used in WebAssembly
-modules because it relies on ``/dev/random`` for implementation. Again, we stub
-this out with the JavaScript ``Math.random`` from the browser. But in this
+modules because it relies on local device access for implementation. Again, we
+stub this out with the JavaScript ``Math.random`` from the browser. But in this
 case we also follow `Rust and WebAssembly With Turtle`_ and create a Rust random
 number generator backed by the JavaScript ``Math.random`` as an extern function.
 This allows us to access the function in our Rust code for use since we need it
