@@ -18,7 +18,7 @@
     "literacy-loader": "^1.1.1",
     "rust-native-wasm-loader": "^0.2.2",
     "wasm-loader": "^1.1.0",
-    "webpack": "~3.10.0",
+    "webpack": "^3.11.0",
     "webpack-dev-server": "^2.11.1"
   },
   "eslintConfig": {
