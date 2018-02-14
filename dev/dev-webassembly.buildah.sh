@@ -86,29 +86,12 @@ buildah run $IMAGE -- /root/.cargo/bin/cargo +nightly install clippy
 
 
 ################################################################################
-# Emscripten
+# WebAssembly
 ################################################################################
 
-EMSCRIPTEN_VERSION=1.37.21
-
-buildah run $IMAGE -- /root/.cargo/bin/rustup target add wasm32-unknown-emscripten
-
-buildah run $IMAGE -- wget https://s3.amazonaws.com/mozilla-games/emscripten/releases/emsdk-portable.tar.gz
-buildah run $IMAGE -- tar xzf emsdk-portable.tar.gz -C /opt
-buildah run $IMAGE -- rm emsdk-portable.tar.gz
-
-buildah run $IMAGE -- /opt/emsdk-portable/emsdk update
-buildah run $IMAGE -- /opt/emsdk-portable/emsdk install clang-e${EMSCRIPTEN_VERSION}-64bit
-buildah run $IMAGE -- /opt/emsdk-portable/emsdk install emscripten-${EMSCRIPTEN_VERSION}
-
-buildah run $IMAGE -- /opt/emsdk-portable/emsdk activate clang-e${EMSCRIPTEN_VERSION}-64bit
-buildah run $IMAGE -- /opt/emsdk-portable/emsdk activate emscripten-${EMSCRIPTEN_VERSION}
-
-# Add the PATH locations for the Emscripten binaries.
-buildah run $IMAGE -- bash -c "echo \"EMSCRIPTEN_VERSION=${EMSCRIPTEN_VERSION}\" >> /root/.bashrc"
-buildah run $IMAGE -- bash -c 'echo "export PATH=\"/opt/emsdk-portable:\$PATH\"" >> /root/.bashrc'
-buildah run $IMAGE -- bash -c 'echo "export PATH=\"/opt/emsdk-portable/clang/e$EMSCRIPTEN_VERSION_64bit:\$PATH\"" >> /root/.bashrc'
-buildah run $IMAGE -- bash -c 'echo "export PATH=\"/opt/emsdk-portable/emscripten/\$EMSCRIPTEN_VERSION:\$PATH\"" >> /root/.bashrc'
+buildah run $IMAGE -- /root/.cargo/bin/rustup default nightly
+buildah run $IMAGE -- /root/.cargo/bin/rustup target add wasm32-unknown-unknown --toolchain nightly
+buildah run $IMAGE -- /root/.cargo/bin/cargo +nightly install --git https://github.com/alexcrichton/wasm-gc
 
 
 ################################################################################

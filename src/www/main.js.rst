@@ -5,22 +5,49 @@ Illustrate using a WebAssembly module compiled from Rust. Start by loading the
 
 .. code-block:: javascript
 
-    const wasm = require('../main.rs');
+    import wasm from '../lib.rs';
 
-Next, initialize the WebAssembly module and create JavaScript wrappers for the
-Rust functions contained in the module.
+This creates ``wasm`` as a Promise resolving to a `WebAssembly.Instance`_.
 
-The Rust source must have a ``main`` function or it does not compile. However,
-``exit(0)`` is implicit at the end of ``main`` which would cause the WebAssembly
-runtime to exit. Pass ``noExitRuntime`` to the module initialisation to suppress
-this behaviour.
+.. _WebAssembly.Instance: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WebAssembly/Instance
+
+Unlike Emscripten, the LLVM backend for wasm-unknown-unknown target does not
+provide linking for math functions. More details are in this
+`StackOverflow question <https://stackoverflow.com/questions/47997306/rust-wasm32-unknown-unknown-math-functions-not-linking>`_.
+
+To get round this, we provide JavaScript implementations for the missing
+functions and the WebAssembly loader inserts these into the environment for the
+loaded module.
+
+The Rust random number generator causes an exception when used in WebAssembly
+modules because it relies on local device access for implementation. Again, we
+stub this out with the JavaScript ``Math.random`` from the browser. But in this
+case we also follow `Rust and WebAssembly With Turtle`_ and create a Rust random
+number generator backed by the JavaScript ``Math.random`` as an extern function.
+This allows us to access the function in our Rust code for use since we need it
+at compile time instead of just runtime.
+
+.. _Rust and WebAssembly With Turtle: https://varblog.org/blog/2018/01/08/rust-and-webassembly-with-turtle/
 
 .. code-block:: javascript
 
-    wasm.initialize({ noExitRuntime: true }).then(module => {
-      const normal = module.cwrap('normal', 'number', []);
+    const env =
+      {
+        'env': {
+          exp: Math.exp,
+          log: Math.log,
+          javascript_math_random: Math.random,
+        },
+      };
 
-We can now use the functions as if they were regular JavaScript.
+Now load the module and collect the exported methods needed.
+
+.. code-block:: javascript
+
+    wasm(env).then(result => {
+      const { normal } = result.instance.exports;
+
+We can now use the function as if it were regular JavaScript.
 
 .. code-block:: javascript
 

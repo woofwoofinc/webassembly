@@ -6,41 +6,20 @@ on your system with rustup_ if they are not already available.
 .. _Rust: https://www.rust-lang.org
 .. _rustup: https://www.rustup.rs
 
-The following dependencies are also needed to build the project.
-
-* CMake_: Needed by Cargo tool library dependency.
-* Libssl_: Needed by Cargo tool library dependency.
-
-.. _CMake: https://cmake.org
-.. _Libssl: https://wiki.openssl.org/index.php/Libssl_API
-
-Emscripten_ is needed to compile ``.wasm`` files. Install it using:
-
-.. _Emscripten: https://github.com/kripken/emscripten
+The Rust WebAssembly target architecture is needed to compile ``.wasm`` files.
+Install it using:
 
 ::
 
-    EMSCRIPTEN_VERSION=1.37.21
-    wget https://s3.amazonaws.com/mozilla-games/emscripten/releases/emsdk-portable.tar.gz
-    tar xzf emsdk-portable.tar.gz
-    cd emsdk-portable
+    rustup target add wasm32-unknown-unknown --toolchain nightly
 
-    emsdk update
-    emsdk install clang-e${EMSCRIPTEN_VERSION}-64bit
-    emsdk install emscripten-${EMSCRIPTEN_VERSION}
-
-    emsdk activate emscripten-${EMSCRIPTEN_VERSION}
-    emsdk activate clang-e${EMSCRIPTEN_VERSION}-64bit
-
-Then add the location of the ``emsdk-portable`` directory,
-``emsdk-portable/clang/e$EMSCRIPTEN_VERSION_64bit``, and
-``emsdk-portable/emscripten/$EMSCRIPTEN_VERSION`` to your PATH.
-
-Finally install the Rust WebAssembly target architecture.
+Since the target architecture is only available on nightly, set that to be the
+default toolchain. This is needed for the Rust Webpack loader which assumes the
+cargo executable is nightly.
 
 ::
 
-    rustup target add wasm32-unknown-emscripten
+    rustup default nightly
 
 The build stack also uses `Node.js`_, the Yarn_ package manager, and the
 Webpack_ module bundler. Install these on your system if they are not already
@@ -103,7 +82,7 @@ To compile a production version of the Webpack project use:
 
 ::
 
-    cargo build
+    cargo +nightly build --target wasm32-unknown-unknown
     webpack -p
 
 This can be served using Python SimpleHTTPServer for inspection or verification:
