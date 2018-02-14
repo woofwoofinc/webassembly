@@ -43,4 +43,3 @@ lazy_static! {
 pub fn normal() -> f64 {
     NORMAL.ind_sample(&mut JavaScriptRng)
 }
-
