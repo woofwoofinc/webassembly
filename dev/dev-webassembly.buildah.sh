@@ -120,13 +120,13 @@ buildah run $IMAGE -- rm yarn-v${YARN_VERSION}.tar.gz
 # Webpack
 ################################################################################
 
-buildah run $IMAGE -- yarn global add --no-progress webpack@3.6.0
-buildah run $IMAGE -- yarn global add --no-progress webpack-dev-server@2.9.1
+buildah run $IMAGE -- yarn global add --no-progress webpack@3.10.0
+buildah run $IMAGE -- yarn global add --no-progress webpack-dev-server@2.11.0
 
 
 ################################################################################
 # Finalise Image
-###############################################################################
+################################################################################
 
 buildah run $IMAGE -- apt-get -qq autoremove
 buildah run $IMAGE -- apt-get -qq clean
